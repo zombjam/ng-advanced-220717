@@ -8,6 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class ColorsComponent implements OnInit {
   type: string | null = '';
   name: string | null = '';
+  data: any = {};
 
   constructor(private router: Router, private route: ActivatedRoute) {}
 
@@ -19,6 +20,10 @@ export class ColorsComponent implements OnInit {
 
     this.route.queryParamMap.subscribe((query) => {
       this.name = query.get('name');
+    });
+
+    this.route.data.subscribe((data) => {
+      this.data = data;
     });
   }
 }

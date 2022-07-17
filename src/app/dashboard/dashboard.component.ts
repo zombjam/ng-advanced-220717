@@ -14,4 +14,17 @@ export class DashboardComponent implements OnInit {
     chartAreaDemo();
     chartPieDemo();
   }
+
+  gotoColors(type: number, name: string) {
+    this.router.navigateByUrl('/utilities/colors/' + type + '?name=' + name);
+  }
+
+  gotoColors2(type: number, name: string) {
+    this.router.navigate(['/utilities/colors', type], {
+      queryParamsHandling: 'merge',
+      queryParams: {
+        name,
+      },
+    });
+  }
 }
