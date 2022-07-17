@@ -26,4 +26,13 @@ export class ColorsComponent implements OnInit {
       this.data = data;
     });
   }
+
+  navigateTo(val: number) {
+    let result = +(this.type || 0) + val;
+    if (!result) return;
+    this.router.navigate(['../', result], {
+      queryParamsHandling: 'preserve',
+      relativeTo: this.route,
+    });
+  }
 }
