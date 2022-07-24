@@ -1,10 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
+  AbstractControl,
   FormBuilder,
   FormGroup,
   FormGroupDirective,
   NgForm,
   UntypedFormGroup,
+  ValidationErrors,
   Validators,
 } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -24,6 +26,15 @@ interface ProfileItem {
 type LoginForm = FormGroup<ToForm<LoginArg>>;
 type ProfileGroupForm = FormGroup<ToForm<ProfileItem>>;
 
+function forbiddenPassword(control: AbstractControl): ValidationErrors | null {
+  if (!control.value) return null;
+  let words = ['test', '123'];
+  if (words.some((word) => control.value.indexOf(word) > -1)) {
+    return { forbiddenPassword: true };
+  }
+  return null;
+}
+
 @Component({
   selector: 'app-login2',
   templateUrl: './login2.component.html',
@@ -40,7 +51,7 @@ export class Login2Component implements OnInit, OnDestroy {
     profiles: [
       { city: 'Taipei', tel: '0988-888888' },
       { city: 'Taichung', tel: '0944-444444' },
-      { city: 'Kaoshuang', tel: '0911-111111' },
+      { city: 'Kaohsiung', tel: '0911-111111' },
     ],
   };
 
@@ -55,6 +66,7 @@ export class Login2Component implements OnInit, OnDestroy {
         Validators.required,
         Validators.minLength(6),
         Validators.maxLength(32),
+        forbiddenPassword,
       ],
     }),
     isRememberMe: this.fb.control(true, {}),

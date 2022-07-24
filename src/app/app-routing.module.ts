@@ -10,7 +10,8 @@ import { Page1Component } from './page1/page1.component';
 import { Page2Component } from './page2/page2.component';
 
 const routes: Routes = [
-  { path: 'login', component: Login2Component },
+  { path: 'login', component: LoginComponent },
+  { path: 'login2', component: Login2Component },
   {
     path: '',
     component: LayoutComponent,

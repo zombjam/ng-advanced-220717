@@ -35,6 +35,11 @@ form.value = {{ form.value | json }}
                       placeholder="Password"
                       formControlName="password"
                     />
+                    <pre>
+form.controls.password.value = {{ form.controls.password.value }}
+form.controls.password.status = {{ form.controls.password.status }}
+form.controls.password.errors = {{ form.controls.password.errors | json }}
+                    </pre>
                   </div>
                   <div class="form-group">
                     <div class="custom-control custom-checkbox small">
