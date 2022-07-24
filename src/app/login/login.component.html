@@ -25,6 +25,7 @@
                       #mEmail="ngModel"
                       required
                       email
+                      minlength="5"
                       [class.is-invalid]="isInValid(mEmail)"
                       [class.is-valid]="isValid(mEmail)"
                     />
@@ -70,6 +71,8 @@ mEmail.errors = {{ mEmail.errors | json }}
                       name="password"
                       #mPassword="ngModel"
                       required
+                      minlength="6"
+                      maxlength="32"
                       [class.is-invalid]="isInValid(mPassword)"
                       [class.is-valid]="isValid(mPassword)"
                     />
