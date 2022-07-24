@@ -12,7 +12,22 @@
                 <div class="text-center">
                   <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
                 </div>
-                <form class="user">
+                <pre>
+form.value = {{ form.value | json }}
+form.valid = {{ form.valid }}
+form.invalid = {{ form.invalid }}
+form.pristine = {{ form.pristine }}
+form.dirty = {{ form.dirty }}
+form.touched = {{ form.touched }}
+form.untouched = {{ form.untouched }}
+form.enabled = {{ form.enabled }}
+form.disabled = {{ form.disabled }}
+form.submitted = {{ form.submitted }}
+form.status = {{ form.status }}
+form.errors = {{ form.errors | json }}
+                  </pre
+                >
+                <form class="user" #form="ngForm" (ngSubmit)="doLogin(form)">
                   <div class="form-group">
                     <input
                       type="email"
@@ -26,18 +41,18 @@
                       required
                       email
                       minlength="5"
-                      [class.is-invalid]="isInValid(mEmail)"
+                      [class.is-invalid]="isInValid(mEmail, form)"
                       [class.is-valid]="isValid(mEmail)"
                     />
                     <p
                       class="invalid-feedback"
-                      *ngIf="isInValid(mEmail) && mEmail.errors?.['required']"
+                      *ngIf="isInValid(mEmail, form) && mEmail.errors?.['required']"
                     >
                       請輸入 Email 地址 (帳號)
                     </p>
                     <p
                       class="invalid-feedback"
-                      *ngIf="isInValid(mEmail) && mEmail.errors?.['email']"
+                      *ngIf="isInValid(mEmail, form) && mEmail.errors?.['email']"
                     >
                       請輸入合法的 Email 地址
                     </p>
@@ -73,7 +88,7 @@ mEmail.errors = {{ mEmail.errors | json }}
                       required
                       minlength="6"
                       maxlength="32"
-                      [class.is-invalid]="isInValid(mPassword)"
+                      [class.is-invalid]="isInValid(mPassword, form)"
                       [class.is-valid]="isValid(mPassword)"
                     />
                   </div>
@@ -92,12 +107,12 @@ mEmail.errors = {{ mEmail.errors | json }}
                       >
                     </div>
                   </div>
-                  <a
-                    (click)="doLogin()"
+                  <button
+                    type="submit"
                     class="btn btn-primary text-white btn-user btn-block"
                   >
-                    Login</a
-                  >
+                    Login
+                  </button>
                   <hr />
                   <a routerLink="/" class="btn btn-google btn-user btn-block">
                     <i class="fab fa-google fa-fw"></i> Login with Google</a
