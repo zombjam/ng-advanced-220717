@@ -25,22 +25,23 @@
                       #mEmail="ngModel"
                       required
                       email
-                      [class.is-invalid]="mEmail.invalid"
-                      [class.is-valid]="mEmail.valid"
+                      [class.is-invalid]="isInValid(mEmail)"
+                      [class.is-valid]="isValid(mEmail)"
                     />
                     <p
                       class="invalid-feedback"
-                      *ngIf="mEmail.invalid && mEmail.errors?.['required']"
+                      *ngIf="isInValid(mEmail) && mEmail.errors?.['required']"
                     >
                       請輸入 Email 地址 (帳號)
                     </p>
                     <p
                       class="invalid-feedback"
-                      *ngIf="mEmail.invalid && mEmail.errors?.['email']"
+                      *ngIf="isInValid(mEmail) && mEmail.errors?.['email']"
                     >
                       請輸入合法的 Email 地址
                     </p>
-                    <pre *ngIf="false">
+                    <pre>
+mEmail.name = {{ mEmail.name }}
 mEmail.value = {{ mEmail.value }}
 mEmail.valid = {{ mEmail.valid }}
 mEmail.invalid = {{ mEmail.invalid }}
@@ -48,8 +49,13 @@ mEmail.pristine = {{ mEmail.pristine }}
 mEmail.dirty = {{ mEmail.dirty }}
 mEmail.touched = {{ mEmail.touched }}
 mEmail.untouched = {{ mEmail.untouched }}
-mEmail.disabled = {{ mEmail.disabled }}
 mEmail.enabled = {{ mEmail.enabled }}
+mEmail.disabled = {{ mEmail.disabled }}
+mEmail.status = {{ mEmail.status }}
+- VALID
+- INVALID
+- DISABLED
+- PENDING
 mEmail.errors = {{ mEmail.errors | json }}
                     </pre>
                   </div>
@@ -64,8 +70,8 @@ mEmail.errors = {{ mEmail.errors | json }}
                       name="password"
                       #mPassword="ngModel"
                       required
-                      [class.is-invalid]="mPassword.invalid"
-                      [class.is-valid]="mPassword.valid"
+                      [class.is-invalid]="isInValid(mPassword)"
+                      [class.is-valid]="isValid(mPassword)"
                     />
                   </div>
                   <div class="form-group">
