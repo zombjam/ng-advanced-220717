@@ -10,6 +10,7 @@ interface LoginArg {
   email: string;
   password: string;
   isRememberMe: boolean;
+  profiles: Array<{ city: string; tel: string }>;
 }
 
 @Component({
@@ -25,6 +26,7 @@ export class Login2Component implements OnInit, OnDestroy {
     password: '123456',
     isRememberMe: true,
     // city: 'Taipei',
+    profiles: [],
   };
 
   // form!: UntypedFormGroup;
@@ -41,6 +43,10 @@ export class Login2Component implements OnInit, OnDestroy {
       ],
     }),
     isRememberMe: this.fb.control(true, {}),
+    profiles: this.fb.array([
+      this.makeProfile('Taipei', '0988-888888'),
+      this.makeProfile('Taichung', '0944-444444'),
+    ]),
   });
 
   constructor(private fb: FormBuilder) {}
@@ -49,8 +55,8 @@ export class Login2Component implements OnInit, OnDestroy {
     document.body.className = 'bg-gradient-primary';
 
     setTimeout(() => {
-      this.form.setValue(this.data);
-      // this.form.patchValue(this.data);
+      // this.form.setValue(this.data);
+      this.form.patchValue(this.data);
     }, 2000);
   }
 
@@ -60,5 +66,16 @@ export class Login2Component implements OnInit, OnDestroy {
 
   resetForm() {
     this.form.reset(this.data);
+  }
+
+  addProfile() {
+    this.form.controls.profiles.push(this.makeProfile('', ''));
+  }
+
+  private makeProfile(city: string, tel: string) {
+    return this.fb.group({
+      city: this.fb.control(city, { validators: [Validators.required] }),
+      tel: this.fb.control(tel, { validators: [Validators.required] }),
+    });
   }
 }

@@ -49,8 +49,49 @@ form.value = {{ form.value | json }}
                       >
                     </div>
                   </div>
-                  <button class="btn btn-primary btn-user btn-block">
+
+                  <button
+                    type="submit"
+                    class="btn btn-primary btn-user btn-block mb-4"
+                  >
                     Login
+                  </button>
+
+                  <ng-container formArrayName="profiles">
+                    <div
+                      *ngFor="
+                        let item of form.controls.profiles.controls;
+                        let i = index
+                      "
+                      [formGroupName]="i"
+                    >
+                      <h3>Profile: {{ i + 1 }}</h3>
+
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          class="form-control form-control-user"
+                          formControlName="city"
+                          placeholder="請輸入城市"
+                        />
+                      </div>
+
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          class="form-control form-control-user"
+                          formControlName="tel"
+                          placeholder="請輸入電話"
+                        />
+                      </div>
+                    </div>
+                  </ng-container>
+                  <button
+                    class="btn btn-primary btn-user btn-info btn-block"
+                    type="button"
+                    (click)="addProfile()"
+                  >
+                    Add Profile
                   </button>
                   <hr />
                   <button
