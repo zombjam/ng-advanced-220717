@@ -2,16 +2,27 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
+  FormGroupDirective,
+  NgForm,
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
 
 interface LoginArg {
   email: string;
   password: string;
   isRememberMe: boolean;
-  profiles: Array<{ city: string; tel: string }>;
+  profiles: Array<ProfileItem>;
 }
+
+interface ProfileItem {
+  city: string;
+  tel: string;
+}
+
+type LoginForm = FormGroup<ToForm<LoginArg>>;
+type ProfileGroupForm = FormGroup<ToForm<ProfileItem>>;
 
 @Component({
   selector: 'app-login2',
@@ -26,11 +37,15 @@ export class Login2Component implements OnInit, OnDestroy {
     password: '123456',
     isRememberMe: true,
     // city: 'Taipei',
-    profiles: [],
+    profiles: [
+      { city: 'Taipei', tel: '0988-888888' },
+      { city: 'Taichung', tel: '0944-444444' },
+      { city: 'Kaoshuang', tel: '0911-111111' },
+    ],
   };
 
   // form!: UntypedFormGroup;
-  form: FormGroup<ToForm<LoginArg>> = this.fb.group({
+  form: LoginForm = this.fb.group({
     email: this.fb.control('', {
       validators: [Validators.required, Validators.email],
       updateOn: 'blur',
@@ -43,20 +58,33 @@ export class Login2Component implements OnInit, OnDestroy {
       ],
     }),
     isRememberMe: this.fb.control(true, {}),
-    profiles: this.fb.array([
-      this.makeProfile('Taipei', '0988-888888'),
-      this.makeProfile('Taichung', '0944-444444'),
-    ]),
+    profiles: this.fb.array<ProfileGroupForm>([]),
   });
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private fb: FormBuilder
+  ) {}
 
   ngOnInit(): void {
     document.body.className = 'bg-gradient-primary';
 
     setTimeout(() => {
-      // this.form.setValue(this.data);
-      this.form.patchValue(this.data);
+      let len = this.data.profiles.length;
+
+      if (len) {
+        this.form.controls.profiles.clear();
+
+        for (const item of this.data.profiles) {
+          this.form.controls.profiles.push(
+            this.makeProfile(item.city, item.tel)
+          );
+        }
+      }
+
+      this.form.setValue(this.data);
+      // this.form.patchValue(this.data);
     }, 2000);
   }
 
@@ -70,6 +98,15 @@ export class Login2Component implements OnInit, OnDestroy {
 
   addProfile() {
     this.form.controls.profiles.push(this.makeProfile('', ''));
+  }
+
+  doLogin() {
+    if (this.form.valid) {
+      console.log(this.form.value);
+      localStorage.setItem('apikey', 'TEST');
+      let returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/';
+      this.router.navigateByUrl(returnUrl);
+    }
   }
 
   private makeProfile(city: string, tel: string) {

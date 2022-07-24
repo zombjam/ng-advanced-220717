@@ -12,11 +12,11 @@
                 <div class="text-center">
                   <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
                 </div>
-                <form class="user" [formGroup]="form">
-                  <pre>
+                <form class="user" [formGroup]="form" (ngSubmit)="doLogin()">
+                  <!-- <pre>
 data = {{ data | json }}
 form.value = {{ form.value | json }}
-                  </pre>
+                  </pre> -->
                   <div class="form-group">
                     <input
                       type="email"
